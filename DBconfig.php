@@ -2,8 +2,8 @@
 return [
     "host" => "localhost",
     "name" => "elama",
-    "user" => "admin",
-    "password" => "12345",
+    "user" => "root",
+    "password" => "root",
     "dbsystem" => "mysql",
     "charset" => "utf8"
 ];
