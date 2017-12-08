@@ -86,4 +86,61 @@ class Account
                                      WHERE id = $acc_id");
         return $res != false;
     }
+
+    public static function getBalance($acc_id) {
+        require_once __DIR__.'/DB.php';
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $queryForInitValue = "SELECT ac_cur.id as acc_curr_id, ac_cur.init_value as value
+                              FROM Accounts ac
+                              INNER JOIN Account_Currency ac_cur ON ac.id=ac_cur.acc_id
+                              WHERE ac.id = :acc_id AND ac.closed IS NULL";
+        $queryForTransactions =
+           "SELECT tr.*
+            FROM 
+                Account_Currency ac_cur 
+            LEFT JOIN 
+                Transactions tr 
+            ON 
+                (ac_cur.id = tr.acc_curr_id_from OR ac_cur.id = tr.acc_curr_id_to)
+            WHERE 
+                ac_cur.id IN 
+                    (SELECT acr.id
+                    FROM Accounts ac
+                    INNER JOIN Account_Currency acr ON ac.id=acr.acc_id
+                    WHERE ac.closed IS NULL
+                    AND ac.id = :acc_id)";
+
+        $db->beginTransaction();
+
+        $stmt = $db->prepare($queryForInitValue);
+        $stmt->execute(['acc_id'=>$acc_id]);
+        $initValues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $db->prepare($queryForTransactions);
+        $stmt->execute(['acc_id'=>$acc_id]);
+        $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $db->commit();
+
+        $acc_values = array(); //acc_curr_id => value
+        foreach ($initValues as $row) {
+            $acc_values[$row['acc_curr_id']] = $row['value'];
+        }
+        foreach ($transactions as $row) {
+            if ($row['acc_curr_id_from'] != null && isset($acc_values[$row['acc_curr_id_from']])) {
+                $acc_values[$row['acc_curr_id_from']] -= $row['value'];
+            }
+            if ($row['acc_curr_id_to'] != null && isset($acc_values[$row['acc_curr_id_to']])) {
+                $v = $row['value'];
+                if ($row['exchange_rate'] != null) {
+                    global $v;
+                    $v *= $row['exchange_rate'];
+                }
+                $acc_values[$row['acc_curr_id_to']] += $v;
+            }
+        }
+        //выбирает ненужные счета!
+        return $acc_values;
+    }
 }
