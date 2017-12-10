@@ -2,7 +2,7 @@
 class DB
 {
     private static $db = null;
-    public function __construct($dbsystem, $host, $db, $charset, $user, $password)
+    private static function create($dbsystem, $host, $db, $charset, $user, $password)
     {
         $dsn = "$dbsystem:host=$host;dbname=$db;charset=$charset";
         $opt = [
@@ -10,13 +10,13 @@ class DB
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false
         ];
-        $this::$db = new PDO($dsn, $user, $password, $opt);
+        self::$db = new PDO($dsn, $user, $password, $opt);
     }
     public static function instance()
     {
         if (!isset(self::$db)) {
-            $dbcfg = require_once __DIR__ . "/../DBconfig.php";
-            self::$db = new DB($dbcfg["dbsystem"], $dbcfg["host"], $dbcfg["name"], $dbcfg["charset"], $dbcfg["user"], $dbcfg["password"]);
+            $dbcfg = require __DIR__ . "/../DBconfig.php";
+            self::create($dbcfg["dbsystem"], $dbcfg["host"], $dbcfg["name"], $dbcfg["charset"], $dbcfg["user"], $dbcfg["password"]);
         }
         return self::$db;
     }

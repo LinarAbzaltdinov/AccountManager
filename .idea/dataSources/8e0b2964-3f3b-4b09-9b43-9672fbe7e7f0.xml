@@ -913,365 +913,514 @@
     <table id="230" parent="2" name="Tags">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="231" parent="2" name="Transaction_tag">
+    <table id="231" parent="2" name="Templates">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="232" parent="2" name="Transactions">
+    <table id="232" parent="2" name="Transaction_tag">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="233" parent="2" name="User_Account">
+    <table id="233" parent="2" name="Transactions">
       <Engine>InnoDB</Engine>
     </table>
-    <table id="234" parent="2" name="Users">
+    <table id="234" parent="2" name="User_Account">
       <Engine>InnoDB</Engine>
     </table>
-    <column id="235" parent="225" name="acc_id">
+    <table id="235" parent="2" name="Users">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="236" parent="2" name="Wishlist">
+      <Engine>InnoDB</Engine>
+    </table>
+    <column id="237" parent="225" name="acc_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="225" name="curr_id">
+    <column id="238" parent="225" name="curr_id">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="225" name="id">
+    <column id="239" parent="225" name="id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="225" name="init_value">
+    <column id="240" parent="225" name="init_value">
       <Position>4</Position>
-      <DataType>int(11)|0</DataType>
+      <DataType>float|0</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="239" parent="225" name="id">
+    <index id="241" parent="225" name="id">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="240" parent="225" name="Account_Currency_fk1">
+    <index id="242" parent="225" name="Account_Currency_fk1">
       <ColNames>curr_id</ColNames>
     </index>
-    <key id="241" parent="225" name="PRIMARY">
+    <key id="243" parent="225" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>acc_id
 curr_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="242" parent="225" name="id">
+    <key id="244" parent="225" name="id">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>id</UnderlyingIndexName>
     </key>
-    <foreign-key id="243" parent="225" name="Account_Currency_fk0">
+    <foreign-key id="245" parent="225" name="Account_Currency_fk0">
       <ColNames>acc_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Accounts</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <foreign-key id="244" parent="225" name="Account_Currency_fk1">
+    <foreign-key id="246" parent="225" name="Account_Currency_fk1">
       <ColNames>curr_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <column id="245" parent="226" name="ID">
+    <column id="247" parent="226" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="226" name="name">
+    <column id="248" parent="226" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="226" name="opened">
+    <column id="249" parent="226" name="opened">
       <Position>3</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="226" name="closed">
+    <column id="250" parent="226" name="closed">
       <Position>4</Position>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="249" parent="226" name="PRIMARY">
+    <key id="251" parent="226" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="250" parent="227" name="id">
+    <column id="252" parent="227" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="227" name="name">
+    <column id="253" parent="227" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="227" name="value">
+    <column id="254" parent="227" name="value">
       <Position>3</Position>
       <DataType>float|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="227" name="cur_id">
+    <column id="255" parent="227" name="cur_id">
       <Position>4</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="254" parent="227" name="Accumulations_fk0">
+    <index id="256" parent="227" name="Accumulations_fk0">
       <ColNames>cur_id</ColNames>
     </index>
-    <key id="255" parent="227" name="PRIMARY">
+    <key id="257" parent="227" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="256" parent="227" name="Accumulations_fk0">
+    <foreign-key id="258" parent="227" name="Accumulations_fk0">
       <ColNames>cur_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <column id="257" parent="228" name="id">
+    <column id="259" parent="228" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="228" name="name">
+    <column id="260" parent="228" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="259" parent="228" name="PRIMARY">
+    <key id="261" parent="228" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="260" parent="229" name="ID">
+    <column id="262" parent="229" name="ID">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="229" name="name">
+    <column id="263" parent="229" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="262" parent="229" name="name">
+    <index id="264" parent="229" name="name">
       <ColNames>name</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="263" parent="229" name="PRIMARY">
+    <key id="265" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="264" parent="229" name="name">
+    <key id="266" parent="229" name="name">
       <ColNames>name</ColNames>
       <UnderlyingIndexName>name</UnderlyingIndexName>
     </key>
-    <column id="265" parent="230" name="id">
+    <column id="267" parent="230" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="266" parent="230" name="name">
+    <column id="268" parent="230" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="267" parent="230" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="268" parent="231" name="trans_id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="269" parent="231" name="tag_id">
-      <Position>2</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="270" parent="231" name="Transaction_tag_fk0">
-      <ColNames>trans_id</ColNames>
-    </index>
-    <index id="271" parent="231" name="Transaction_tag_fk1">
-      <ColNames>tag_id</ColNames>
-    </index>
-    <foreign-key id="272" parent="231" name="Transaction_tag_fk0">
-      <ColNames>trans_id</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Transactions</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="273" parent="231" name="Transaction_tag_fk1">
-      <ColNames>tag_id</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Tags</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="274" parent="232" name="id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="275" parent="232" name="acc_curr_id_from">
-      <Position>2</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="276" parent="232" name="acc_curr_id_to">
+    <column id="269" parent="230" name="user_id">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="277" parent="232" name="cat_id">
-      <Position>4</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="278" parent="232" name="value">
-      <Position>5</Position>
-      <DataType>float|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="279" parent="232" name="exchange_rate">
-      <Position>6</Position>
-      <DataType>float|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="280" parent="232" name="Transactions_fk0">
-      <ColNames>acc_curr_id_from</ColNames>
+    <index id="270" parent="230" name="Tags_fk0">
+      <ColNames>user_id</ColNames>
     </index>
-    <index id="281" parent="232" name="Transactions_fk1">
-      <ColNames>acc_curr_id_to</ColNames>
-    </index>
-    <index id="282" parent="232" name="Transactions_fk2">
-      <ColNames>cat_id</ColNames>
-    </index>
-    <key id="283" parent="232" name="PRIMARY">
+    <key id="271" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="284" parent="232" name="Transactions_fk0">
-      <ColNames>acc_curr_id_from</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Account_Currency</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="285" parent="232" name="Transactions_fk1">
-      <ColNames>acc_curr_id_to</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Account_Currency</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="286" parent="232" name="Transactions_fk2">
-      <ColNames>cat_id</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Category</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <column id="287" parent="233" name="user_id">
-      <Position>1</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="288" parent="233" name="acc_id">
-      <Position>2</Position>
-      <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="289" parent="233" name="User_Account_fk1">
-      <ColNames>acc_id</ColNames>
-    </index>
-    <key id="290" parent="233" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>user_id
-acc_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="291" parent="233" name="User_Account_fk0">
+    <foreign-key id="272" parent="230" name="Tags_fk0">
       <ColNames>user_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Users</RefTableName>
       <RefColNames>ID</RefColNames>
     </foreign-key>
-    <foreign-key id="292" parent="233" name="User_Account_fk1">
-      <ColNames>acc_id</ColNames>
-      <RefSchemaName>elama</RefSchemaName>
-      <RefTableName>Accounts</RefTableName>
-      <RefColNames>ID</RefColNames>
-    </foreign-key>
-    <column id="293" parent="234" name="ID">
+    <column id="273" parent="231" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="234" name="username">
+    <column id="274" parent="231" name="user_id">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="275" parent="231" name="currency_id">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="276" parent="231" name="value">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="277" parent="231" name="name">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="278" parent="231" name="name">
+      <ColNames>name</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="279" parent="231" name="Templates_fk0">
+      <ColNames>user_id</ColNames>
+    </index>
+    <index id="280" parent="231" name="Templates_fk1">
+      <ColNames>currency_id</ColNames>
+    </index>
+    <index id="281" parent="231" name="Templates_fk2">
+      <ColNames>value</ColNames>
+    </index>
+    <key id="282" parent="231" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="283" parent="231" name="name">
+      <ColNames>name</ColNames>
+      <UnderlyingIndexName>name</UnderlyingIndexName>
+    </key>
+    <foreign-key id="284" parent="231" name="Templates_fk0">
+      <ColNames>user_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Users</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="285" parent="231" name="Templates_fk1">
+      <ColNames>currency_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Currency</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="286" parent="231" name="Templates_fk2">
+      <ColNames>value</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Currency</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="287" parent="232" name="trans_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="288" parent="232" name="tag_id">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="289" parent="232" name="Transaction_tag_fk0">
+      <ColNames>trans_id</ColNames>
+    </index>
+    <index id="290" parent="232" name="Transaction_tag_fk1">
+      <ColNames>tag_id</ColNames>
+    </index>
+    <foreign-key id="291" parent="232" name="Transaction_tag_fk0">
+      <ColNames>trans_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Transactions</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="292" parent="232" name="Transaction_tag_fk1">
+      <ColNames>tag_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Tags</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="293" parent="233" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="294" parent="233" name="acc_curr_id_from">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="295" parent="233" name="acc_curr_id_to">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="296" parent="233" name="cat_id">
+      <Position>4</Position>
+      <DataType>int(11)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="297" parent="233" name="value">
+      <Position>5</Position>
+      <DataType>float|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="298" parent="233" name="exchange_rate">
+      <Position>6</Position>
+      <DataType>float|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="299" parent="233" name="tr_date">
+      <Position>7</Position>
+      <DataType>datetime|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="300" parent="233" name="Transactions_fk0">
+      <ColNames>acc_curr_id_from</ColNames>
+    </index>
+    <index id="301" parent="233" name="Transactions_fk1">
+      <ColNames>acc_curr_id_to</ColNames>
+    </index>
+    <index id="302" parent="233" name="Transactions_fk2">
+      <ColNames>cat_id</ColNames>
+    </index>
+    <key id="303" parent="233" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="304" parent="233" name="Transactions_fk0">
+      <ColNames>acc_curr_id_from</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Account_Currency</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="305" parent="233" name="Transactions_fk1">
+      <ColNames>acc_curr_id_to</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Account_Currency</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="306" parent="233" name="Transactions_fk2">
+      <ColNames>cat_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Category</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="307" parent="234" name="user_id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="308" parent="234" name="acc_id">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="309" parent="234" name="User_Account_fk1">
+      <ColNames>acc_id</ColNames>
+    </index>
+    <key id="310" parent="234" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_id
+acc_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="311" parent="234" name="User_Account_fk0">
+      <ColNames>user_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Users</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="312" parent="234" name="User_Account_fk1">
+      <ColNames>acc_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Accounts</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <column id="313" parent="235" name="ID">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="314" parent="235" name="username">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="234" name="password">
+    <column id="315" parent="235" name="password">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="296" parent="234" name="username">
+    <index id="316" parent="235" name="username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="297" parent="234" name="PRIMARY">
+    <key id="317" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="298" parent="234" name="username">
+    <key id="318" parent="235" name="username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>username</UnderlyingIndexName>
     </key>
+    <column id="319" parent="236" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="320" parent="236" name="user_id">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="321" parent="236" name="name">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="322" parent="236" name="value">
+      <Position>4</Position>
+      <DataType>float|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="323" parent="236" name="curr_id">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="324" parent="236" name="Wishlist_fk0">
+      <ColNames>user_id</ColNames>
+    </index>
+    <index id="325" parent="236" name="Wishlist_fk1">
+      <ColNames>curr_id</ColNames>
+    </index>
+    <key id="326" parent="236" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="327" parent="236" name="Wishlist_fk0">
+      <ColNames>user_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Users</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
+    <foreign-key id="328" parent="236" name="Wishlist_fk1">
+      <ColNames>curr_id</ColNames>
+      <RefSchemaName>elama</RefSchemaName>
+      <RefTableName>Currency</RefTableName>
+      <RefColNames>ID</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>

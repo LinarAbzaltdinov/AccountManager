@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <form method="POST" action="../../src/loginform.php" class="form-signin">
+        <h2 class="form-heading">Вход</h2>
+        <div class="form-group">
+            <input name="username" type="text" class="form-control" placeholder="Имя пользователя"
+                   autofocus="true"/>
+            <input name="password" type="password" class="form-control" placeholder="Пароль"/>
+            {% if isRegistration == false %}
+                {% if error == true %}
+                    <div class="form-group has-error">Ошибка, попробуйте снова</div>
+                {% endif %}
+                <input name="action" type="hidden" value="signin" />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+                <h4 class="text-center"><a href="registration.php">Создать аккаунт</a></h4>
+            {% else %}
+                {% if error == true %}
+                    <div class="form-group has-error">Данный логин занят</div>
+                {% endif %}
+                <input name="action" type="hidden" value="signup" />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
+            {% endif %}
+
+        </div>
+    </form>
+</div>
+{% endblock %}
