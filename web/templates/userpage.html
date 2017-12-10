@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
+<div class="container">
+    <h4>Hello, {{ username }}!</h4>
+    {% block menu %}
+    <nav class="menu-main">
+    <ul id="navigation">
+        {% for page,name in menubar %}
+        <li><a href="lk.php?active={{page}}" {% if name == pageTitle %} class="current" {% endif %} >{{name}}</a></li>
+        {% endfor %}
+    </ul>
+    </nav>
+    {% endblock %}
+    {% block main %}{% endblock %}
+</div>
 {% endblock %}

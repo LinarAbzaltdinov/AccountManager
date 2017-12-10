@@ -15,8 +15,10 @@ class User
                   where username like :usr';
         $stmt = $db->prepare($queryFindUser);
         $res = $stmt->execute(['usr'=>$username]);
-        if ($res && password_verify($password, ($stmt->fetch(PDO::FETCH_ASSOC))['password']))
-            return true;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $correctpw = $row['password'];
+        if ($res && password_verify($password, $correctpw))
+            return $row['id'];
         else
             return false;
     }
@@ -25,14 +27,18 @@ class User
     {
         require_once __DIR__ . "/DB.php";
         $db = DB::instance();
+        $db->beginTransaction();
         $queryAddUser = 'insert into Users(username,password) 
                  values (:username,:password)';
         $stmt = $db->prepare($queryAddUser);
         try {
             $stmt->execute(['username' => $username, 'password' => $password]);
+            $user_id = $db->lastInsertId();
+            $db->commit();
+            return $user_id;
         } catch (PDOException $ex) {
+            $db->rollback();
             return false;
         }
-        return true;
     }
 }

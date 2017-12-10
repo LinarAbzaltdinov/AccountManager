@@ -1,6 +1,6 @@
 <?php
 if (isset($_SESSION['username'])) {
-    header("location: balance.php");
+    header("location: lk.php");
 } else {
     header("location: login.php");
 }

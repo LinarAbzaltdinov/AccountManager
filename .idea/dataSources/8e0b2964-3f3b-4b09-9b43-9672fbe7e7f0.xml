@@ -978,15 +978,15 @@ curr_id</ColNames>
       <ColNames>acc_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Accounts</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="246" parent="225" name="Account_Currency_fk1">
       <ColNames>curr_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="247" parent="226" name="ID">
+    <column id="247" parent="226" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
@@ -1012,7 +1012,7 @@ curr_id</ColNames>
     </column>
     <key id="251" parent="226" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ID</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
     <column id="252" parent="227" name="id">
@@ -1052,7 +1052,7 @@ curr_id</ColNames>
       <ColNames>cur_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <column id="259" parent="228" name="id">
       <Position>1</Position>
@@ -1072,7 +1072,7 @@ curr_id</ColNames>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="262" parent="229" name="ID">
+    <column id="262" parent="229" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
@@ -1091,7 +1091,7 @@ curr_id</ColNames>
     </index>
     <key id="265" parent="229" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ID</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
     <key id="266" parent="229" name="name">
@@ -1129,7 +1129,7 @@ curr_id</ColNames>
       <ColNames>user_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Users</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <column id="273" parent="231" name="id">
       <Position>1</Position>
@@ -1188,19 +1188,19 @@ curr_id</ColNames>
       <ColNames>user_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Users</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="285" parent="231" name="Templates_fk1">
       <ColNames>currency_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="286" parent="231" name="Templates_fk2">
       <ColNames>value</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <column id="287" parent="232" name="trans_id">
       <Position>1</Position>
@@ -1328,15 +1328,15 @@ acc_id</ColNames>
       <ColNames>user_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Users</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="312" parent="234" name="User_Account_fk1">
       <ColNames>acc_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Accounts</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="313" parent="235" name="ID">
+    <column id="313" parent="235" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
@@ -1361,7 +1361,7 @@ acc_id</ColNames>
     </index>
     <key id="317" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>ID</ColNames>
+      <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
     <key id="318" parent="235" name="username">
@@ -1414,13 +1414,13 @@ acc_id</ColNames>
       <ColNames>user_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Users</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="328" parent="236" name="Wishlist_fk1">
       <ColNames>curr_id</ColNames>
       <RefSchemaName>elama</RefSchemaName>
       <RefTableName>Currency</RefTableName>
-      <RefColNames>ID</RefColNames>
+      <RefColNames>id</RefColNames>
     </foreign-key>
   </database-model>
 </dataSource>
