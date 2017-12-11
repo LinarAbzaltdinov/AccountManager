@@ -3,6 +3,9 @@
 {% block body %}
 <div class="container">
     <h4>Hello, {{ username }}!</h4>
+    {%for name,value in exchangeRates %}
+        {{name}}: {{value}} RUB,
+    {% endfor %}
     {% block menu %}
     <nav class="menu-main">
     <ul id="navigation">
