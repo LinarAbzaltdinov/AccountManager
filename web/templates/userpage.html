@@ -2,10 +2,14 @@
 
 {% block body %}
 <div class="container">
-    <h4>Hello, {{ username }}!</h4>
-    {%for name,value in exchangeRates %}
-        {{name}}: {{value}} RUB,
-    {% endfor %}
+    <div class="container">
+        <h4 style="float: left;">Hello, {{ username }}!</h4>
+        <div style="color: #4cae4c; float: right;"><b>
+        {%for name,value in exchangeRates %}
+        1 {{name}} = {{value}} RUB<br>
+        {% endfor %}
+        </b></div>
+    </div>
     {% block menu %}
     <nav class="menu-main">
     <ul id="navigation">
