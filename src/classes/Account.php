@@ -3,7 +3,7 @@
 class Account
 {
 
-    public static function createAcc($user_id, $acc_name, $currencies) {
+    public static function createAcc($user_id, $acc_name, $currencies_initValues) {
         require_once __DIR__.'/../DBconfig.php';
         $db = DB::instance();
         $db->beginTransaction();
@@ -14,7 +14,7 @@ class Account
         $stmt = $db->prepare("INSERT INTO User_Account 
                                         VALUES (:user_id, :acc_id)");
         $stmt->execute(['user_id'=>$user_id, 'acc_id'=>$acc_id]);
-        $res = createAccCurrencies($acc_id, $currencies, $db);
+        $res = self::createAccCurrencies($acc_id, $currencies_initValues, $db);
         if ($res)
             $db->commit();
         else
@@ -22,17 +22,54 @@ class Account
         return $res;
     }
 
-    private static function createAccCurrencies($acc_id, $currencies, $db) {
-        $insertQuery = "INSERT INTO Account_Currency (acc_id, curr_id, init_value) 
-                        VALUES ($acc_id, :curr_id, :init_value)";
-        return execQueryForArray($insertQuery, $currencies, $db);
+    public static function updateAcc($acc_id, $new_acc_name, $currencies_initValues) {
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $db->beginTransaction();
+        $stmt = $db->prepare("UPDATE Accounts 
+                                        SET name = :acc_name
+                                        WHERE id =  $acc_id");
+        $stmt->execute(['acc_name'=>$new_acc_name]);
+        $exist_curr = $db->query("SELECT curr_id FROM Account_Currency WHERE acc_id = $acc_id")->fetchAll(PDO::FETCH_ASSOC);
+        $updateCurrenciesAndValues = array();
+        $insertCurrenciesAndValues = array();
+        foreach ($currencies_initValues as $row) {
+            foreach ($exist_curr as $exist) {
+                if ($exist['curr_id'] == $row['curr_id']) {
+                    array_push($insertCurrenciesAndValues, $row);
+                } else {
+                    array_push($updateCurrenciesAndValues, $row);
+                }
+            }
+        }
+        $res_ins = self::createAccCurrencies($acc_id, $insertCurrenciesAndValues, $db);
+        $res_upd = self::updateAccCurrencies($acc_id, $updateCurrenciesAndValues, $db);
+        if ($res_ins && $res_upd)
+            $db->commit();
+        else
+            $db->rollBack();
+        return $res_ins && $res_upd;
     }
 
-    private static function updateAccCurrencies($acc_id, $currencies, $db) {
+    public static function closeAcc($acc_id) {
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $res = $db->query("UPDATE Accounts SET closed = NOW() 
+                                     WHERE id = $acc_id");
+        return $res != false;
+    }
+
+    private static function createAccCurrencies($acc_id, $currencies_initValues, $db) {
+        $insertQuery = "INSERT INTO Account_Currency (acc_id, curr_id, init_value) 
+                        VALUES ($acc_id, :curr_id, :init_value)";
+        return self::execQueryForArray($insertQuery, $currencies_initValues, $db);
+    }
+
+    private static function updateAccCurrencies($acc_id, $currencies_initValues, $db) {
         $updateQuery = "UPDATE Account_Currency 
                         SET init_value = :init_value
                         WHERE curr_id = :curr_id AND acc_id = $acc_id";
-        return execQueryForArray($updateQuery, $currencies, $db);
+        return self::execQueryForArray($updateQuery, $currencies_initValues, $db);
     }
 
     private static function execQueryForArray($query, $array, $db) {
@@ -48,43 +85,6 @@ class Account
             $stmt = null;
         }
         return $res;
-    }
-
-    public static function updateAcc($acc_id, $new_acc_name, $currencies) {
-        require_once __DIR__.'/../DBconfig.php';
-        $db = DB::instance();
-        $db->beginTransaction();
-        $stmt = $db->prepare("UPDATE Accounts 
-                                        SET name = :acc_name
-                                        WHERE id =  $acc_id");
-        $stmt->execute(['acc_name'=>$new_acc_name]);
-        $exist_curr = $db->query("SELECT curr_id FROM Account_Currency WHERE acc_id = $acc_id")->fetchAll(PDO::FETCH_ASSOC);
-        $updateCurrencies = array();
-        $insertCurrencies = array();
-        foreach ($currencies as $row) {
-            foreach ($exist_curr as $exist) {
-                if ($exist['curr_id'] == $row['curr_id']) {
-                    array_unshift($insertCurrencies, $row);
-                } else {
-                    array_unshift($updateCurrencies, $row);
-                }
-            }
-        }
-        $res_ins = createAccCurrencies($acc_id, $insertCurrencies, $db);
-        $res_upd = updateAccCurrencies($acc_id, $updateCurrencies, $db);
-        if ($res_ins && $res_upd)
-            $db->commit();
-        else
-            $db->rollBack();
-        return $res_ins && $res_upd;
-    }
-
-    public static function closeAcc($acc_id) {
-        require_once __DIR__.'/../DBconfig.php';
-        $db = DB::instance();
-        $res = $db->query("UPDATE Accounts SET closed = NOW() 
-                                     WHERE id = $acc_id");
-        return $res != false;
     }
 
     public static function getBalance($acc_id) {
@@ -128,10 +128,10 @@ class Account
             $acc_values[$row['acc_curr_id']] = $row['value'];
         }
         foreach ($transactions as $row) {
-            if ($row['acc_curr_id_from'] != null && isset($acc_values[$row['acc_curr_id_from']])) {
+            if (array_key_exists($row['acc_curr_id_from'], $acc_values) && isset($acc_values[$row['acc_curr_id_from']])) {
                 $acc_values[$row['acc_curr_id_from']] -= $row['value'];
             }
-            if ($row['acc_curr_id_to'] != null && isset($acc_values[$row['acc_curr_id_to']])) {
+            if (array_key_exists($row['acc_curr_id_to'], $acc_values) && isset($acc_values[$row['acc_curr_id_to']])) {
                 $v = $row['value'];
                 if ($row['exchange_rate'] != null) {
                     global $v;
@@ -140,7 +140,10 @@ class Account
                 $acc_values[$row['acc_curr_id_to']] += $v;
             }
         }
-        //выбирает ненужные счета!
         return $acc_values;
+    }
+
+    public static function getInfo($acc_id) {
+
     }
 }

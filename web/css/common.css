@@ -5,10 +5,10 @@ body {
     background-color: #eee;
 }
 
-.to-delete a {
+.history a {
     text-decoration: none; 
 }
-.to-delete a:hover {
+.history a:hover {
     color: #FF0000; 
     text-decoration: underline;
 }

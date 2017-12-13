@@ -41,4 +41,21 @@ class User
             return false;
         }
     }
+
+    public static function getAccountIDs($user_id) {
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $stmt = $db->prepare("
+            SELECT acc_id
+            FROM User_Account 
+            WHERE user_id = :user_id");
+        $stmt->execute(['user_id'=>$user_id]);
+
+        $res = array_map(
+            function($row) {
+                return $row['acc_id'];
+            },
+            $stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $res;
+    }
 }

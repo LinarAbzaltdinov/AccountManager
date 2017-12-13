@@ -1,0 +1,51 @@
+{% extends 'userpage.html' %}
+
+{% block main %}
+
+{% block edit %}
+
+{% if formAction=="create" %}
+    <h4>Добавление аккаунта</h4>
+{% elseif formAction=="update" %}
+    <h4>Изменение аккаунта</h4>
+{% endif %}
+<form method="POST" action="../../src/accountform.php" >
+    <input type="text" name="name" placeholder="Название счета"><br>
+    {% if acc_id is defined %} <input type="hidden" name="id" value="{{acc_id}}"> {% endif %}
+    Используемые валюты:<br>
+    {% for currency in currencies %}
+    <input type="checkbox" name="{{currency.id}}" >{{currency.name}}
+    <input type="number" min="0" name="{{currency.id}}value" placeholder="Начальная сумма"><br>
+    {% endfor %}
+    <input type="hidden" name="formAction" value="{{formAction}}">
+    <button type="submit" value="{{formAction}}">{{formAction}}</button>
+</form>
+{% endblock %}
+{% block history %}
+<h4>Счета:</h4>
+<table class="history"><tbody>
+    <tr>
+        <th>№</th>
+        <th>Название счета</th>
+        <th>Начальная сумма</th>
+        <th>Баланс</th>
+        <th>Валюта</th>
+        <th>Дата создания</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+    </tr>
+    {% for row in history %}
+    <tr>
+        <th>{{row.id}}</th>
+        <th>{{row.name}}</th>
+        <th>{{row.initValue}}</th>
+        <th>{{row.balance}}</th>
+        <th>{{row.currency}}</th>
+        <th>{{row.date}}</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+{% endblock %}

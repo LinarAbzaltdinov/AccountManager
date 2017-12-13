@@ -9,6 +9,7 @@ switch ($_POST['action']) {
         $user_id = User::verify($username, $password);
         if ($user_id != false) {
             $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $user_id;
             header("location: ../web/lk.php");
         } else
             header("location: ../web/login.php?error=true");
@@ -19,6 +20,7 @@ switch ($_POST['action']) {
         $user_id = User::create($username, $password);
         if ($user_id != false) {
             $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $user_id;
             header("location: ../web/lk.php");
         } else
             header("location: ../web/registration.php?error=true");
