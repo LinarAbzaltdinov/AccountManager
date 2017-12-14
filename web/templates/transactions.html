@@ -31,9 +31,9 @@
         {% endfor %}
     </select><br>
     {% endif %}
-    <input type="number" min="0" name="value" placeholder="Сумма"><br>
+    <input type="number" min="0" name="value" step=0.01 placeholder="Сумма"><br>
     {% if formAction=='transfer' %}
-    <input type="number" min="0" name="ex_rate" placeholder="Стоимоть валюты зачисления в валюте списания"><br>
+    <input type="number" min="0" name="ex_rate" step=0.01 placeholder="Стоимоть валюты зачисления в валюте списания"><br>
     {% endif %}
     <input type="hidden" name="formAction" value="{{formAction}}">
     <button type="submit">Добавить</button>
@@ -64,10 +64,10 @@
         <th>{{tr.acc_name}}</th>
         <th>{{tr.curr_name}}</th>
         {% elseif formAction=='transfer' %}
-        <th>Счет списания</th>
-        <th>Валюта списания</th>
-        <th>Счет зачиления</th>
-        <th>Валюта зачиления</th>
+        <th>{{tr.acc_from_name}}</th>
+        <th>{{tr.curr_from_name}}</th>
+        <th>{{tr.acc_to_name}}</th>
+        <th>{{tr.curr_to_name}}</th>
         {% endif %}
         <th>{{tr.value}}</th>
         <th>{{tr.cat_name}}</th>
@@ -76,7 +76,12 @@
 
         </th>
         <th>
-            Удалить
+            <form method="POST" action="../../src/form.php" >
+                <input type="hidden" name="tr_id" value="{{tr.id}}">
+                <input type="hidden" name="formAction" value="{{formAction}}">
+                <input type="hidden" name="delete" value="true">
+                <input type="submit" value="Удалить">
+            </form>
         </th>
     </tr>
     {% endfor %}

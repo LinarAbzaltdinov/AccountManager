@@ -6,13 +6,21 @@ require_once __DIR__.'/../src/classes/Currency.php';
 require_once __DIR__.'/../src/classes/Account.php';
 require_once __DIR__.'/../src/classes/Transaction.php';
 
+$action = $_POST['formAction'];
+if (isset($_POST['delete'])) {
+    $tr_id = $_POST['tr_id'];
+    $db = DB::instance();
+    $db->query("DELETE FROM Transactions WHERE id = $tr_id");
+    header("location: ../web/lk.php?active=$action");
+}
+
+
 $acc_curr_id_from = null;
 $acc_curr_id_to = null;
 $cat_id = isset($_POST['cat_id']) ? $_POST['cat_id'] : null;
 $value = empty($_POST['value']) ? 0 : $_POST['value'];
 $ex_rate = isset($_POST['ex_rate']) ? $_POST['ex_rate'] : null;
 
-$action = $_POST['formAction'];
 if ($action == 'outcome' || $action == 'transfer') {
     $db = DB::instance();
     $stmt = $db->prepare("SELECT id

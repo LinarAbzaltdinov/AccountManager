@@ -15,7 +15,7 @@
     Используемые валюты:<br>
     {% for currency in currencies %}
     <input type="checkbox" name="{{currency.id}}" {% if updAcc[currency.id] is defined %} checked {% endif %}>{{currency.name}}
-    <input type="number" min="0" {% if updAcc[currency.id] is defined %} value="{{updAcc[currency.id]}}" {% endif %} name="{{currency.id}}value" placeholder="Начальная сумма"><br>
+    <input type="number" step=0.01 min="0" {% if updAcc[currency.id] is defined %} value="{{updAcc[currency.id]}}" {% endif %} name="{{currency.id}}value" placeholder="Начальная сумма"><br>
     {% endfor %}
     <input type="hidden" name="formAction" value="{{formAction}}">
     <button type="submit" value="{{formAction}}">{{formAction}}</button>

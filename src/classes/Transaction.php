@@ -8,23 +8,25 @@ class Transaction
         require_once __DIR__.'/../DBconfig.php';
         $db = DB::instance();
         $outcomeQuery = "SELECT T.*, 
-                          (SELECT name FROM Accounts WHERE id = AC.acc_id) as acc_name,
-                          (SELECT name FROM Currency WHERE id = AC.curr_id) as curr_name
+                          (SELECT name FROM Accounts WHERE Accounts.id = AC.acc_id) as acc_name,
+                          (SELECT name FROM Currency WHERE Currency.id = AC.curr_id) as curr_name
                         FROM Transactions T LEFT JOIN Account_Currency AC ON T.acc_curr_id_from = AC.id
                         WHERE acc_curr_id_from IN (:acc_ids) 
                         AND acc_curr_id_to IS NULL";
         $incomeQuery = "SELECT T.*, 
-                          (SELECT name FROM Accounts WHERE id = AC.acc_id) as acc_name,
-                          (SELECT name FROM Currency WHERE id = AC.curr_id) as curr_name
+                          (SELECT name FROM Accounts WHERE Accounts.id = AC.acc_id) as acc_name,
+                          (SELECT name FROM Currency WHERE Currency.id = AC.curr_id) as curr_name
                         FROM Transactions T LEFT JOIN Account_Currency AC ON T.acc_curr_id_to = AC.id
                         WHERE acc_curr_id_to IN (:acc_ids) 
                         AND acc_curr_id_from IS NULL";
         $transferQuery = "SELECT T.*, 
-                          (SELECT name FROM Accounts WHERE id = AC.acc_id) as acc_name,
-                          (SELECT name FROM Currency WHERE id = AC.curr_id) as curr_name
-                        FROM Transactions T LEFT JOIN Account_Currency AC ON T.acc_curr_id_from = AC.id OR T.acc_curr_id_to = AC.id
-                        WHERE acc_curr_id_to IN (:acc_ids) 
-                        AND acc_curr_id_from IN (:acc_ids)";
+                          (SELECT name FROM Accounts WHERE id IN (SELECT acc_id FROM Account_Currency WHERE id = acc_curr_id_from)) as acc_from_name,
+                          (SELECT name FROM Currency WHERE id IN (SELECT curr_id FROM Account_Currency WHERE id = acc_curr_id_from)) as curr_from_name,
+                          (SELECT name FROM Accounts WHERE id IN (SELECT acc_id FROM Account_Currency WHERE id = acc_curr_id_to)) as acc_to_name,
+                          (SELECT name FROM Currency WHERE id IN (SELECT curr_id FROM Account_Currency WHERE id = acc_curr_id_to)) as curr_to_name
+                        FROM Transactions T
+                        WHERE acc_curr_id_to IN (:acc_ids1) 
+                        AND acc_curr_id_from IN (:acc_ids2)";
         $queries = array();
         if (isset($trType['outcome']))
             array_push($queries, $outcomeQuery);
@@ -32,11 +34,11 @@ class Transaction
             array_push($queries, $incomeQuery);
         if (isset($trType['transfer']))
             array_push($queries, $transferQuery);
-        $resultedQuery = join(" UNION ", $queries) . " ORDER BY tr_date";
+        $resultedQuery = join(" UNION ", $queries) . " ORDER BY tr_date DESC";
         $acc_curr_ids = array_map(function ($row) {return $row['id'];}, self::getAccCurrIdsFromAccId($acc_ids));
         $db = DB::instance();
         $stmt = $db->prepare($resultedQuery);
-        $stmt->execute(['acc_ids'=>join(", ",$acc_curr_ids)]);
+        $stmt->execute(['acc_ids1'=>join(", ",$acc_curr_ids),'acc_ids2'=>join(", ",$acc_curr_ids)]);
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
