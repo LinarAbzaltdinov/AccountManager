@@ -46,9 +46,10 @@ class User
         require_once __DIR__.'/../DBconfig.php';
         $db = DB::instance();
         $stmt = $db->prepare("
-            SELECT acc_id, (SELECT A.name FROM Accounts A WHERE A.id = acc_id) as acc_name
-            FROM User_Account 
-            WHERE user_id = :user_id");
+            SELECT acc_id, A.name as acc_name
+            FROM User_Account UA LEFT JOIN Accounts A ON UA.acc_id = A.id
+            WHERE UA.user_id = :user_id
+            AND A.closed IS NULL");
         $stmt->execute(['user_id'=>$user_id]);
 
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);

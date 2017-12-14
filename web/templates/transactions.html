@@ -1,0 +1,85 @@
+{% extends 'userpage.html' %}
+
+{% block main %}
+{% block edit %}
+<form method="POST" action="../../src/transactionform.php" >
+    {% if formAction=='outcome' or formAction=='transfer' %}
+    Счет списания:
+    <select name="acc_id_from">
+        {% for acc in accounts %}
+        <option value="{{acc.id}}">{{acc.name}}</option>
+        {% endfor %}
+    </select><br>
+    Валюта списания:
+    <select name="curr_id_from">
+        {% for curr in currencies %}
+        <option value="{{curr.id}}">{{curr.name}}</option>
+        {% endfor %}
+    </select><br>
+    {% endif %}
+    {% if formAction=='income' or formAction=='transfer' %}
+    Счет зачисления:
+    <select name="acc_id_to">
+        {% for acc in accounts %}
+        <option value="{{acc.id}}">{{acc.name}}</option>
+        {% endfor %}
+    </select><br>
+    Валюта зачисления:
+    <select name="curr_id_to">
+        {% for curr in currencies %}
+        <option value="{{curr.id}}">{{curr.name}}</option>
+        {% endfor %}
+    </select><br>
+    {% endif %}
+    <input type="number" min="0" name="value" placeholder="Сумма"><br>
+    {% if formAction=='transfer' %}
+    <input type="number" min="0" name="ex_rate" placeholder="Стоимоть валюты зачисления в валюте списания"><br>
+    {% endif %}
+    <input type="hidden" name="formAction" value="{{formAction}}">
+    <button type="submit">Добавить</button>
+</form>
+{% endblock %}
+{% block history %}
+<h4>История:</h4>
+<table class="history"><tbody>
+    <tr>
+        {% if formAction=='outcome' or formAction=='income' %}
+        <th>Название счета</th>
+        <th>Валюта</th>
+        {% elseif formAction=='transfer' %}
+        <th>Счет списания</th>
+        <th>Валюта списания</th>
+        <th>Счет зачиления</th>
+        <th>Валюта зачиления</th>
+        {% endif %}
+        <th>Сумма</th>
+        <th>Категория</th>
+        <th>Дата</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+    </tr>
+    {% for tr in history %}
+    <tr>
+        {% if formAction=='outcome' or formAction=='income' %}
+        <th>{{tr.acc_name}}</th>
+        <th>{{tr.curr_name}}</th>
+        {% elseif formAction=='transfer' %}
+        <th>Счет списания</th>
+        <th>Валюта списания</th>
+        <th>Счет зачиления</th>
+        <th>Валюта зачиления</th>
+        {% endif %}
+        <th>{{tr.value}}</th>
+        <th>{{tr.cat_name}}</th>
+        <th>{{tr.tr_date}}</th>
+        <th>
+
+        </th>
+        <th>
+            Удалить
+        </th>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+{% endblock %}

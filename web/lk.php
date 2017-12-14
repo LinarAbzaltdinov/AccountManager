@@ -8,6 +8,7 @@ require_once __DIR__.'/../src/classes/DB.php';
 require_once __DIR__.'/../src/DBconfig.php';
 require_once __DIR__.'/../src/classes/ExchangeRates.php';
 require_once __DIR__.'/../src/classes/Currency.php';
+require_once __DIR__.'/../src/classes/Transaction.php';
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -27,10 +28,11 @@ $twigElems = array(
     'menubar' => $menubar,
     'exchangeRates' => $rates
 );
-
+$user_id = $_SESSION['user_id'];
+$template = 'account';
 switch ($activePage) {
     case 'account':
-        $user_id = $_SESSION['user_id'];
+        $template = 'account';
         $accountsInfo = User::getAccountsInfo($user_id);
         $twigElems['accounts'] = $accountsInfo;
 
@@ -51,9 +53,19 @@ switch ($activePage) {
             $twigElems['updAcc'] = $updAcc;
         }
         break;
+    case 'outcome':
+    case 'income':
+    case 'transfer':
+        $template = 'transactions';
+        $accountsInfo = User::getAccountsInfo($user_id);
+        $twigElems['accounts'] = $accountsInfo;
+        $twigElems['formAction'] = $activePage;
+        $twigElems['currencies'] = Currency::getCurrencies();
+        $twigElems['history'] = Transaction::getTransactions(array($activePage=>true), array_map(function ($row) {return $row['id'];}, $accountsInfo));
+        break;
 }
 $loader = new Twig_Loader_Filesystem(__DIR__.'/templates');
 $twig = new Twig_Environment($loader);
-echo $twig->render($activePage.'.html', $twigElems);
+echo $twig->render($template.'.html', $twigElems);
 
 //echo '<pre>'; print_r(Account::getBalance(1)); echo '</pre>';
