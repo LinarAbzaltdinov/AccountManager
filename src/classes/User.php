@@ -42,20 +42,29 @@ class User
         }
     }
 
-    public static function getAccountIDs($user_id) {
+    public static function getAccounts($user_id) {
         require_once __DIR__.'/../DBconfig.php';
         $db = DB::instance();
         $stmt = $db->prepare("
-            SELECT acc_id
+            SELECT acc_id, (SELECT A.name FROM Accounts A WHERE A.id = acc_id) as acc_name
             FROM User_Account 
             WHERE user_id = :user_id");
         $stmt->execute(['user_id'=>$user_id]);
 
-        $res = array_map(
-            function($row) {
-                return $row['acc_id'];
-            },
-            $stmt->fetchAll(PDO::FETCH_ASSOC));
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
+
+    public static function getAccountsInfo($user_id) {
+        require_once __DIR__.'/../DBconfig.php';
+        $accounts = User::getAccounts($user_id);
+        $accountInfo = array();
+        for ($i = 0; $i < count($accounts); ++$i) {
+            $info = Account::getExtendedInfo($accounts[$i]['acc_id']);
+            $accountInfo[$i] = $info;
+        }
+        return $accountInfo;
+    }
+
+
 }

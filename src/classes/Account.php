@@ -34,21 +34,29 @@ class Account
         $updateCurrenciesAndValues = array();
         $insertCurrenciesAndValues = array();
         foreach ($currencies_initValues as $row) {
-            foreach ($exist_curr as $exist) {
-                if ($exist['curr_id'] == $row['curr_id']) {
-                    array_push($insertCurrenciesAndValues, $row);
-                } else {
+            $found = false;
+            for ($i = 0; $i < count($exist_curr); ++$i) {
+                if ($exist_curr[$i]['curr_id'] == $row['curr_id']) {
                     array_push($updateCurrenciesAndValues, $row);
+                    array_splice($exist_curr, $i, 1);
+                    $found = true;
+                    break;
                 }
             }
+            if (!$found) {
+                array_push($insertCurrenciesAndValues, $row);
+            }
         }
+        $deleteCurrencies = $exist_curr;
+
         $res_ins = self::createAccCurrencies($acc_id, $insertCurrenciesAndValues, $db);
         $res_upd = self::updateAccCurrencies($acc_id, $updateCurrenciesAndValues, $db);
-        if ($res_ins && $res_upd)
+        $res_del = self::deleteAccCurrencies($acc_id, $deleteCurrencies, $db);
+        if ($res_ins && $res_upd && $res_del)
             $db->commit();
         else
             $db->rollBack();
-        return $res_ins && $res_upd;
+        return $res_ins && $res_upd && $res_del;
     }
 
     public static function closeAcc($acc_id) {
@@ -63,6 +71,12 @@ class Account
         $insertQuery = "INSERT INTO Account_Currency (acc_id, curr_id, init_value) 
                         VALUES ($acc_id, :curr_id, :init_value)";
         return self::execQueryForArray($insertQuery, $currencies_initValues, $db);
+    }
+
+    private static function deleteAccCurrencies($acc_id, $currencies, $db) {
+        $deleteQuery = "DELETE FROM Account_Currency                         
+                        WHERE curr_id = :curr_id";
+        return self::execQueryForArray($deleteQuery, $currencies, $db);
     }
 
     private static function updateAccCurrencies($acc_id, $currencies_initValues, $db) {
@@ -87,11 +101,11 @@ class Account
         return $res;
     }
 
-    public static function getBalance($acc_id) {
+    private static function getBalance($acc_id) {
         require_once __DIR__.'/DB.php';
         require_once __DIR__.'/../DBconfig.php';
         $db = DB::instance();
-        $queryForInitValue = "SELECT ac_cur.id as acc_curr_id, ac_cur.init_value as value
+        $queryForInitValue = "SELECT ac_cur.id as acc_curr_id, ac_cur.init_value as value, ac.name as name
                               FROM Accounts ac
                               INNER JOIN Account_Currency ac_cur ON ac.id=ac_cur.acc_id
                               WHERE ac.id = :acc_id AND ac.closed IS NULL";
@@ -110,9 +124,6 @@ class Account
                     INNER JOIN Account_Currency acr ON ac.id=acr.acc_id
                     WHERE ac.closed IS NULL
                     AND ac.id = :acc_id)";
-
-        $db->beginTransaction();
-
         $stmt = $db->prepare($queryForInitValue);
         $stmt->execute(['acc_id'=>$acc_id]);
         $initValues = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -121,9 +132,7 @@ class Account
         $stmt->execute(['acc_id'=>$acc_id]);
         $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $db->commit();
-
-        $acc_values = array(); //acc_curr_id => value
+        $acc_values = array();
         foreach ($initValues as $row) {
             $acc_values[$row['acc_curr_id']] = $row['value'];
         }
@@ -133,17 +142,50 @@ class Account
             }
             if (array_key_exists($row['acc_curr_id_to'], $acc_values) && isset($acc_values[$row['acc_curr_id_to']])) {
                 $v = $row['value'];
-                if ($row['exchange_rate'] != null) {
-                    global $v;
+                if ($row['exchange_rate'] != null)
                     $v *= $row['exchange_rate'];
-                }
                 $acc_values[$row['acc_curr_id_to']] += $v;
             }
         }
         return $acc_values;
     }
 
-    public static function getInfo($acc_id) {
+    public static function getExtendedInfo($acc_id) {
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $query="SELECT *
+                FROM Accounts
+                WHERE id = :acc_id";
+        $stmt = $db->prepare($query);
+        $stmt->execute(['acc_id'=>$acc_id]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($res['closed'] != null)
+            return $res;
+        $query="SELECT curr_id, 
+                  (SELECT name FROM Currency WHERE id=curr_id) as curr_name,
+                  id,
+                  init_value
+                FROM Account_Currency
+                WHERE acc_id = :acc_id";
+        $stmt = $db->prepare($query);
+        $stmt->execute(['acc_id'=>$acc_id]);
+        $res['acc_curr'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $currentBalance = self::getBalance($acc_id);
+        for ($i = 0; $i < count($res['acc_curr']); ++$i) {
+            $res['acc_curr'][$i]['current_value'] = $currentBalance[$res['acc_curr'][$i]['id']];
+        }
+        return $res;
+    }
 
+    public static function getInfo($acc_id) {
+        require_once __DIR__.'/../DBconfig.php';
+        $db = DB::instance();
+        $query="SELECT *
+                FROM Accounts
+                WHERE id = :acc_id";
+        $stmt = $db->prepare($query);
+        $stmt->execute(['acc_id'=>$acc_id]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res;
     }
 }

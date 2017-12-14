@@ -5,17 +5,17 @@
 {% block edit %}
 
 {% if formAction=="create" %}
-    <h4>Добавление аккаунта</h4>
+    <h4>Добавление счета</h4>
 {% elseif formAction=="update" %}
-    <h4>Изменение аккаунта</h4>
+    <h4>Изменение счета</h4>
 {% endif %}
 <form method="POST" action="../../src/accountform.php" >
-    <input type="text" name="name" placeholder="Название счета"><br>
+    <input type="text" name="name" placeholder="Название счета" {% if acc_name is defined %} value="{{acc_name}} {% endif %}"><br>
     {% if acc_id is defined %} <input type="hidden" name="id" value="{{acc_id}}"> {% endif %}
     Используемые валюты:<br>
     {% for currency in currencies %}
-    <input type="checkbox" name="{{currency.id}}" >{{currency.name}}
-    <input type="number" min="0" name="{{currency.id}}value" placeholder="Начальная сумма"><br>
+    <input type="checkbox" name="{{currency.id}}" {% if updAcc[currency.id] is defined %} checked {% endif %}>{{currency.name}}
+    <input type="number" min="0" {% if updAcc[currency.id] is defined %} value="{{updAcc[currency.id]}}" {% endif %} name="{{currency.id}}value" placeholder="Начальная сумма"><br>
     {% endfor %}
     <input type="hidden" name="formAction" value="{{formAction}}">
     <button type="submit" value="{{formAction}}">{{formAction}}</button>
@@ -25,26 +25,45 @@
 <h4>Счета:</h4>
 <table class="history"><tbody>
     <tr>
-        <th>№</th>
         <th>Название счета</th>
         <th>Начальная сумма</th>
-        <th>Баланс</th>
-        <th>Валюта</th>
+        <th>Текущий баланс</th>
         <th>Дата создания</th>
         <th>Изменить</th>
         <th>Удалить</th>
     </tr>
-    {% for row in history %}
+    {% for acc in accounts %}
+    {% if acc.closed == null %}
     <tr>
-        <th>{{row.id}}</th>
-        <th>{{row.name}}</th>
-        <th>{{row.initValue}}</th>
-        <th>{{row.balance}}</th>
-        <th>{{row.currency}}</th>
-        <th>{{row.date}}</th>
-        <th>Изменить</th>
-        <th>Удалить</th>
+        <th>{{acc.name}}</th>
+        <th>
+            {% for acc_currency in acc.acc_curr %}
+                {{acc_currency.init_value}} {{acc_currency.curr_name}}<br>
+            {% endfor %}
+        </th>
+        <th>
+            {% for acc_currency in acc.acc_curr %}
+            {{acc_currency.current_value}} {{acc_currency.curr_name}}<br>
+            {% endfor %}
+        </th>
+        <th>{{acc.opened}}</th>
+        <th>
+            <form method="GET" action="" >
+                <input type="hidden" name="active" value="account">
+                <input type="hidden" name="formAction" value="update">
+                <input type="hidden" name="acc_id" value="{{acc.id}}">
+                <input type="submit" value="Изменить">
+            </form>
+        </th>
+        <th>
+            <form method="POST" action="../../src/accountform.php" >
+                <input type="hidden" name="acc_id" value="{{acc.id}}">
+                <input type="hidden" name="formAction" value="delete">
+                <input type="submit" value="Удалить">
+            </form>
+        </th>
     </tr>
+    {% endif %}
     {% endfor %}
 </table>
 {% endblock %}

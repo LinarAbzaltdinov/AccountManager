@@ -14,7 +14,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $menubar = require_once __DIR__.'/menu.php';
 $username = $_SESSION['username'];
-$pageTitle = 'Личный кабинет';
+$pageTitle = 'Счета';
 $activePage = 'account';
 if (isset($_GET['active'])) {
     $pageTitle = $menubar[$_GET['active']];
@@ -31,27 +31,25 @@ $twigElems = array(
 switch ($activePage) {
     case 'account':
         $user_id = $_SESSION['user_id'];
-        $accounts = User::getAccountIDs($user_id);
-        $accountBalances = array();
-        foreach ($accounts as $acc) {
-            $balance = Account::getBalance($acc);
-            $accountBalances[$acc] = $balance;
-        }
-        $twigElems['history'] = $accountBalances;
+        $accountsInfo = User::getAccountsInfo($user_id);
+        $twigElems['accounts'] = $accountsInfo;
 
         $formAcition = 'create';
         if (isset($_GET['formAction']))
             $formAcition = $_GET['formAction'];
         $twigElems['formAction'] = $formAcition;
-
-        switch($formAcition) {
-            case 'create':
-                $twigElems['currencies'] = Currency::getCurrencies();
-                break;
-            case 'update':
-                break;
+        $twigElems['currencies'] = Currency::getCurrencies();
+        if ($formAcition == 'update') {
+            $twigElems['acc_id'] = $_GET['acc_id'];
+            $updAcc = array();
+            foreach ($accountsInfo as $acc)
+                if ($acc['id']==$_GET['acc_id']) {
+                    $twigElems['acc_name'] = $acc['name'];
+                    foreach ($acc['acc_curr'] as $accCurrency)
+                        $updAcc[$accCurrency['curr_id']] = $accCurrency['init_value'];
+                }
+            $twigElems['updAcc'] = $updAcc;
         }
-
         break;
 }
 $loader = new Twig_Loader_Filesystem(__DIR__.'/templates');
