@@ -1,8 +1,18 @@
 # AccountManager
-<h2>Система учета личных расходов и доходов.</h2>
+Manage all your expenses and income. You can:
+- Create accounts with different currencies
+- Add income/expenses for account (also from templates)
+- Transfer money between accounts and convert from one currency to another.
+- Add categories for income/expenses and search by them
+- Create templates for income/expenses
+- Add your wishes
+- See balances of your accounts :) 
 
-Посмотреть схему БД можно <a href="http://dbdesigner.net/designer/schema/130616">здесь.</a><br>
-Однако лучше использовать скрипт createDB.sql, в нем есть некоторые INSERT'ы.<br>
-Настройки подключения к БД находятся DBconfig.php.
-<br><br>
-Главная страница - /web/index.php
+# How to run
+DB scheme: [here](http://dbdesigner.net/designer/schema/130616) (You also can generate "create script" there).
+
+In [createDB.sql](/createDB.sql) script with some INSERT queries.
+
+Connection settings to the database: [DBconfig.php](/src/DBconfig.php).
+
+Main page - [index.php](/web/index.php).
